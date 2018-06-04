@@ -1,0 +1,9 @@
+{
+  "extends": "@significa/significa",
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "graphql": true
+  }
+}
