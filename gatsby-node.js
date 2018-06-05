@@ -62,8 +62,21 @@ exports.onCreateNode = ({ node, boundActionCreators }) => {
       return {}
     }
 
-    const contentPath = path.join(__dirname, 'src', 'data/folder')
-    const imagePath = path.join(__dirname, '', node[key])
+    // We need to find the file's path inside the 'data' folder
+    const jsonPartialPath = node.id
+      // Node id is full path with some more text in the end
+      // We split with 'data'
+      .split('/data')
+      // Get the last part (relative dir + filename and some string)
+      .pop()
+      // Split by /
+      .split('/')
+      // Remove last part (filename and some string)
+      .slice(0, -1)
+      // Join it again
+      .join('/')
+    const contentPath = path.join(__dirname, 'src/data', jsonPartialPath)
+    const imagePath = path.join(__dirname, node[key])
     const relative = path.relative(contentPath, imagePath)
 
     const existingValue = node.fields && node.fields[key]
