@@ -1,3 +1,4 @@
 {
-  "hello": "Hello world"
+  "hello": "Hello world",
+  "image": "/src/assets/cat.jpg"
 }
