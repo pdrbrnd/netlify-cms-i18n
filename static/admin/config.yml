@@ -3,7 +3,8 @@ backend:
   repo: pbrandone/netlify-cms-i18n
   branch: master # Branch to update
 
-media_folder: "static/media/"
+media_folder: static/media
+public_folder: /media
 
 collections:
   - label: "Pages"

@@ -1,4 +1,4 @@
 {
   "hello": "Hello world",
-  "image": "/static/media/cat.jpg"
+  "image": "/media/cat.jpg"
 }
