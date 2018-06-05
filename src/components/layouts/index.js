@@ -17,7 +17,10 @@ const Layout = ({ locale, children }) => (
 
 Layout.propTypes = {
   locale: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]).isRequired,
 }
 
 export default Layout
