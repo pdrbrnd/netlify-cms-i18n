@@ -54,6 +54,18 @@ exports.onCreateNode = ({ node, boundActionCreators }) => {
     return
   }
 
+  // Get filename to find out the JSON locale
+  const fileName = node.id
+    .split('.json')[0]
+    .split('/')
+    .pop()
+
+  createNodeField({
+    node,
+    name: 'locale',
+    value: fileName,
+  })
+
   Object.keys(node).map(key => {
     const isString = typeof node[key] === 'string'
     const hasImageExtension = /\.(gif|jpg|jpeg|tiff|png)$/i.test(node[key])
@@ -76,7 +88,7 @@ exports.onCreateNode = ({ node, boundActionCreators }) => {
       // Join it again
       .join('/')
     const contentPath = path.join(__dirname, 'src/data', jsonPartialPath)
-    const imagePath = path.join(__dirname, node[key])
+    const imagePath = path.join(__dirname, 'static', node[key])
     const relative = path.relative(contentPath, imagePath)
 
     const existingValue = node.fields && node.fields[key]
