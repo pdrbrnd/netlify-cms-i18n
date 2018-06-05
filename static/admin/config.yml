@@ -1,0 +1,25 @@
+backend:
+  name: github
+  repo: pbrandone/netlify-cms-i18n
+  branch: master # Branch to update
+
+media_folder: "src/assets/"
+
+collections:
+  - label: "Pages"
+    name: "pages"
+    files:
+      - label: "Home page (English)"
+        name: "home_en"
+        file: "src/data/home/en.json"
+        extension: "json"
+        fields:
+          - {label: "Hello world", name: "hello", widget: "string"}
+          - {label: "Featured Image", name: "image", widget: "image"}
+      - label: "Home page (Portuguese)"
+        name: "home_pt"
+        file: "src/data/home/pt.json"
+        extension: "json"
+        fields:
+          - {label: "Hello world", name: "hello", widget: "string"}
+          - {label: "Featured Image", name: "image", widget: "image"}

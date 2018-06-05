@@ -1,9 +1,11 @@
-/* eslint consistent-return: 0 */
+/* eslint consistent-return: 0, no-restricted-syntax: 0 */
 /**
  * Implement Gatsby's Node APIs in this file.
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
+
+const path = require(`path`)
 
 const locales = {
   en: {
@@ -17,19 +19,20 @@ const locales = {
 
 const getLocalizedPages = page =>
   Object.keys(locales).map(lang => {
-    const path = locales[lang].default
+    const localizedPath = locales[lang].default
       ? page.path
       : locales[lang].path + page.path
 
     return {
       ...page,
-      path,
+      path: localizedPath,
       context: {
         locale: lang,
       },
     }
   })
 
+// Create duplicates for each page in each language
 exports.onCreatePage = ({ page, boundActionCreators }) => {
   const { createPage, deletePage } = boundActionCreators
 
@@ -40,5 +43,44 @@ exports.onCreatePage = ({ page, boundActionCreators }) => {
     pages.map(p => createPage(p))
 
     resolve()
+  })
+}
+
+// Get image's relative path to JSON
+exports.onCreateNode = ({ node, boundActionCreators }) => {
+  const { createNodeField } = boundActionCreators
+
+  if (node.internal.owner !== 'gatsby-transformer-json') {
+    return
+  }
+
+  Object.keys(node).map(key => {
+    const isString = typeof node[key] === 'string'
+    const hasImageExtension = /\.(gif|jpg|jpeg|tiff|png)$/i.test(node[key])
+
+    if (!isString || !hasImageExtension) {
+      return {}
+    }
+
+    const contentPath = path.join(__dirname, 'src', 'data/folder')
+    const imagePath = path.join(__dirname, '', node[key])
+    const relative = path.relative(contentPath, imagePath)
+
+    const existingValue = node.fields && node.fields[key]
+
+    let value
+    if (typeof existingValue === 'string') {
+      value = [existingValue, relative]
+    } else if (Array.isArray(existingValue)) {
+      value = [...existingValue, relative]
+    } else {
+      value = relative
+    }
+
+    return createNodeField({
+      node,
+      name: key,
+      value,
+    })
   })
 }

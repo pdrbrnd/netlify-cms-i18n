@@ -9,6 +9,7 @@ const IndexPage = ({ pathContext: { locale }, ...props }) => {
   return (
     <Layout locale={locale}>
       <div>{data.hello}</div>
+      <img alt="little cat" src={data.fields.image.publicURL} />
     </Layout>
   )
 }
@@ -20,6 +21,11 @@ export const query = graphql`
         node {
           childHomeJson {
             hello
+            fields {
+              image {
+                publicURL
+              }
+            }
           }
         }
       }
