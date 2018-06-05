@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Img from 'gatsby-image'
 
 import Layout from '../components/layouts'
 
@@ -10,7 +11,7 @@ const IndexPage = ({ pathContext: { locale }, ...props }) => {
     <Layout locale={locale}>
       <div>{data.hello}</div>
       {data.fields.image && (
-        <img alt="little cat" src={data.fields.image.publicURL} />
+        <Img resolutions={data.fields.image.childImageSharp.resolutions} />
       )}
     </Layout>
   )
@@ -24,7 +25,11 @@ export const query = graphql`
           id
           fields {
             image {
-              publicURL
+              childImageSharp {
+                resolutions(width: 125, height: 125) {
+                  ...GatsbyImageSharpResolutions
+                }
+              }
             }
           }
         }
