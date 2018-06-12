@@ -17,21 +17,6 @@ const locales = {
   },
 }
 
-const getLocalizedPages = page =>
-  Object.keys(locales).map(lang => {
-    const localizedPath = locales[lang].default
-      ? page.path
-      : locales[lang].path + page.path
-
-    return {
-      ...page,
-      path: localizedPath,
-      context: {
-        locale: lang,
-      },
-    }
-  })
-
 // Create duplicates for each page in each language
 exports.onCreatePage = ({ page, boundActionCreators }) => {
   const { createPage, deletePage } = boundActionCreators
@@ -39,8 +24,19 @@ exports.onCreatePage = ({ page, boundActionCreators }) => {
   return new Promise(resolve => {
     deletePage(page)
 
-    const pages = getLocalizedPages(page)
-    pages.map(p => createPage(p))
+    Object.keys(locales).map(lang => {
+      const localizedPath = locales[lang].default
+        ? page.path
+        : locales[lang].path + page.path
+
+      return createPage({
+        ...page,
+        path: localizedPath,
+        context: {
+          locale: lang,
+        },
+      })
+    })
 
     resolve()
   })

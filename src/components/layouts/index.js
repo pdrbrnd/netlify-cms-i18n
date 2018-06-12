@@ -1,26 +1,22 @@
-/* eslint jsx-a11y/anchor-is-valid: 0 */
 import React from 'react'
-import PropTypes from 'prop-types'
-import Link from 'gatsby-link'
+import { IntlProvider, addLocaleData } from 'react-intl'
+
+// Locale data
+import enData from 'react-intl/locale-data/en'
+import ptData from 'react-intl/locale-data/pt'
+
+// Messages
+import en from '../../data/en.json'
+import pt from '../../data/pt.json'
+
+const messages = { en, pt }
+
+addLocaleData([...enData, ...ptData])
 
 const Layout = ({ locale, children }) => (
-  <div>
-    <h1>Hello world</h1>
-    <p>The locale is now: {locale}</p>
-
-    <Link to="/">English</Link>
-    <Link to="/pt">Portuguese</Link>
-    <hr />
+  <IntlProvider locale={locale} messages={messages[locale]}>
     {children}
-  </div>
+  </IntlProvider>
 )
-
-Layout.propTypes = {
-  locale: PropTypes.string.isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
-}
 
 export default Layout
